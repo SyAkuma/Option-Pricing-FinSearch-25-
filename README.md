@@ -1,201 +1,131 @@
-# Black-Scholes Model Accuracy Assessment for Nifty50 Options
+# Option Pricing Models & Accuracy Assessment
 
-This repository contains a comprehensive Python implementation for assessing the accuracy of the Black-Scholes Model by comparing calculated option prices with real market prices from Nifty50 index options.
+This repository provides a comprehensive Python framework to:
+- Implement the Black-Scholes Model (with Greeks)
+- Validate against real or synthetic Nifty50 options data
+- Cross-verify using Monte Carlo simulations
+- Compute detailed accuracy metrics (MAE, RMSE, MAPE, Theil’s U, correlation)
 
-## 📊 Project Overview
+---
 
-The Black-Scholes Model is a fundamental tool in options pricing, but its accuracy in real-world scenarios, particularly for Indian markets like Nifty50, requires empirical validation. This project provides:
+## 📂 Repository Structure
 
-- **Complete Black-Scholes Implementation**: Full implementation with Greeks calculation
-- **Monte Carlo Simulation**: Alternative pricing method for comparison
-- **Comprehensive Accuracy Metrics**: Multiple statistical measures to assess model performance
-- **Real Market Data Integration**: Framework to work with NSE Nifty50 options data
-- **Detailed Analysis**: Breakdown by moneyness, time to maturity, and volatility regimes
-
-## 🚀 Features
-
-### Core Components
-
-1. **BlackScholesModel Class**
-   - European call and put option pricing
-   - All option Greeks (Delta, Gamma, Vega, Theta, Rho)
-   - Dividend yield support
-
-2. **MonteCarloOptionPricer Class**
-   - Monte Carlo simulation for option pricing
-   - Configurable number of simulations
-   - Standard error calculations
-
-3. **AccuracyAssessment Framework**
-   - Mean Absolute Error (MAE)
-   - Root Mean Square Error (RMSE) 
-   - Mean Absolute Percentage Error (MAPE)
-   - Theil's U Statistic
-   - Correlation analysis
-
-### Analysis Capabilities
-
-- **Moneyness Analysis**: ITM, ATM, OTM option performance
-- **Maturity Analysis**: Short-term vs long-term options
-- **Volatility Regime Analysis**: Performance across different volatility environments
-- **Time Series Analysis**: Model performance over time
-
-## 📦 Installation
-
-### Prerequisites
-
-```bash
-pip install numpy pandas scipy matplotlib
-```
-
-### Repository Structure
-
-```
+Option-Pricing-FinSearch-25/
 ├── README.md
 ├── requirements.txt
-├── black_scholes_nifty_assessment.py    # Main assessment script
-├── data/
-│   ├── nifty50_options_backtest_data.csv    # Sample dataset
-│   └── README.md                            # Data documentation
-├── src/
-│   ├── __init__.py
-│   ├── black_scholes.py                    # Core BS implementation
-│   ├── monte_carlo.py                      # MC simulation
-│   └── accuracy_assessment.py              # Analysis framework
-├── examples/
-│   ├── basic_pricing_example.py
-│   └── advanced_analysis_example.py
-├── tests/
-│   └── test_black_scholes.py
-└── docs/
-    └── monte_carlo_overview.md
-```
+├── config.py
+├── test_implementation.py
+├── basic_pricing_example.py
+├── black_scholes_nifty_assessment.py
+├── black_scholes_accuracy_results.csv
+├── monte_carlo_overview.md
+└── nifty50_options_backtest_data.csv
 
-## 🔧 Usage
+text
 
-### Basic Usage
+- **config.py**: Configuration for different market scenarios  
+- **test_implementation.py**: Automated validation tests  
+- **basic_pricing_example.py**: Self-contained Black-Scholes & Monte Carlo demo  
+- **black_scholes_nifty_assessment.py**: Main backtest & reporting script  
+- **black_scholes_accuracy_results.csv**: Generated accuracy results  
+- **monte_carlo_overview.md**: Monte Carlo methodology documentation  
+- **nifty50_options_backtest_data.csv**: Sample backtesting dataset  
 
-```python
-from src.black_scholes import BlackScholesModel
+---
 
-# Initialize model
-bs_model = BlackScholesModel(
-    S=24500,      # Current Nifty50 level
-    K=24600,      # Strike price
-    T=30/365,     # Time to expiration (30 days)
-    r=0.065,      # Risk-free rate (6.5%)
-    sigma=0.18    # Volatility (18%)
-)
+## ⚙️ Installation
 
-# Calculate option prices
-call_price = bs_model.call_price()
-put_price = bs_model.put_price()
+1. **Clone the repository**  
+git clone https://github.com/YourUsername/Option-Pricing-FinSearch-25.git
+cd Option-Pricing-FinSearch-25
 
-# Calculate Greeks
-greeks = bs_model.all_greeks()
-```
+text
+2. **Create and activate a virtual environment**  
+python3 -m venv venv
+source venv/bin/activate
 
-### Running the Assessment
+text
+3. **Install dependencies**  
+pip install -r requirements.txt
 
-```bash
+text
+
+---
+
+## 🔎 Usage
+
+### 1. Run Automated Tests
+
+Validate core implementation before analysis:
+python test_implementation.py
+
+text
+All 3 tests must pass:
+- Black-Scholes basic pricing  
+- Put-Call parity  
+- Monte Carlo convergence  
+
+---
+
+### 2. Demo Example
+
+Quickly compare Black-Scholes vs Monte Carlo on a sample Nifty50 scenario:
+python basic_pricing_example.py
+
+text
+Outputs:
+- Market parameters (spot, strike, days, r, σ)  
+- Black-Scholes call & put prices  
+- Option Greeks (Δ, Γ, Θ, ν, ρ)  
+- Monte Carlo price ± standard error  
+- Percentage differences  
+
+---
+
+### 3. Full Backtest & Accuracy Assessment
+
+Run the main analysis on `nifty50_options_backtest_data.csv` or your own data:
 python black_scholes_nifty_assessment.py
-```
 
-### Custom Data Analysis
+text
+This will:
+- Load or generate synthetic data  
+- Compute Black-Scholes prices for each contract  
+- Calculate error metrics: MAE, RMSE, MAPE, Theil’s U, correlation  
+- Perform Monte Carlo cross-validation on a sample contract  
+- Save detailed results to `black_scholes_accuracy_results.csv`  
 
-```python
-import pandas as pd
-from black_scholes_nifty_assessment import main
+---
 
-# Load your NSE options data
-data = pd.read_csv('your_nifty_options_data.csv')
+## 📄 Data Format
 
-# Run assessment
-call_metrics, put_metrics = main()
-```
+Your CSV must include these columns:
 
-## 📈 Expected Data Format
+| Column               | Description                         |
+|----------------------|-------------------------------------|
+| spot_price           | Current Nifty50 index level         |
+| strike_price         | Option strike price                 |
+| time_to_maturity     | Time to expiration (in years)       |
+| volatility           | Implied volatility (decimal)        |
+| risk_free_rate       | Risk-free rate (decimal, e.g. 0.065)|
+| market_call_price    | Observed call option market price   |
+| market_put_price     | Observed put option market price    |
+| days_to_expiry       | Time to expiration (in days)        |
 
-Your CSV data should include the following columns:
+---
 
-| Column | Description |
-|--------|-------------|
-| `spot_price` | Current Nifty50 index level |
-| `strike_price` | Option strike price |
-| `time_to_maturity` | Time to expiration (in years) |
-| `volatility` | Implied volatility |
-| `risk_free_rate` | Risk-free rate |
-| `market_call_price` | Market price of call option |
-| `market_put_price` | Market price of put option |
+## 📊 Results Interpretation
 
-## 🔍 Key Findings (Based on Analysis)
+- **MAE**: Mean Absolute Error  
+- **RMSE**: Root Mean Square Error  
+- **MAPE**: Mean Absolute Percentage Error (ideal < 5%)  
+- **Correlation**: Pearson’s R (excellent > 0.99)  
+- **Theil’s U**: Relative accuracy (very good < 0.05)  
 
-### Overall Model Performance
-- **Call Options MAPE**: ~4.16% (High accuracy)
-- **Put Options MAPE**: ~3.53% (Very high accuracy)  
-- **Model Correlation**: >0.995 (Excellent correlation with market prices)
-
-### Moneyness Analysis
-- **ATM Options**: Best model performance (lowest errors)
-- **ITM Options**: Moderate pricing errors
-- **OTM Options**: Variable performance depending on time to maturity
-
-### Time to Maturity Effects
-- **Short-term options**: Higher relative errors due to time decay sensitivity
-- **Medium-term options**: Most consistent model performance
-- **Long-term options**: Good accuracy but lower liquidity in real markets
-
-## 📊 Monte Carlo Simulation Overview
-
-Monte Carlo methods provide an alternative to closed-form solutions like Black-Scholes, especially valuable for:
-
-### Applications
-- **Complex Payoffs**: Asian options, barrier options, exotic derivatives
-- **Multiple Underlying Assets**: Basket options, rainbow options
-- **Path-Dependent Features**: Lookback options, path-dependent barriers
-- **Model Validation**: Cross-verification of analytical results
-
-### Methodology
-1. **Generate Random Paths**: Simulate stock price evolution using geometric Brownian motion
-2. **Calculate Payoffs**: Evaluate option payoff for each simulated path
-3. **Average and Discount**: Calculate mean payoff and discount to present value
-4. **Statistical Analysis**: Estimate confidence intervals and convergence
-
-### Advantages
-- **Flexibility**: Handles any payoff structure
-- **Accuracy**: Convergence guaranteed by Law of Large Numbers
-- **Intuitive**: Easy to understand and implement
-- **Robust**: Works under various market conditions
-
-### Limitations
-- **Computational Cost**: Requires many simulations for accuracy
-- **Convergence Rate**: Slow convergence (error ∝ 1/√N)
-- **Memory Requirements**: Large datasets for complex derivatives
-
-## 📚 References
-
-- Black, F., & Scholes, M. (1973). "The Pricing of Options and Corporate Liabilities"
-- Hull, J. C. (2018). "Options, Futures, and Other Derivatives"
-- Kumar, R., et al. (2020). "Empirical Investigation of Black-Scholes Model in Pricing Index Nifty 50 Options"
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙋‍♂️ Support
-
-For questions and support:
-- Open an issue on GitHub
-- Contact: [your-email@example.com]
-
-## ⚠️ Disclaimer
-
-This software is for educational and research purposes only. It should not be used for actual trading decisions without proper risk management and professional advice. The authors are not responsible for any financial losses incurred from using this software.
+Example:
+CALL OPTIONS:
+Mean Absolute Percentage Error: 4.04%
+Correlation: 0.9951
+PUT OPTIONS:
+Mean Absolute Percentage Error: 3.99%
+Correlation: 0.9962
