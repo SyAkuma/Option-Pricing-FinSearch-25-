@@ -1,11 +1,5 @@
 #!/usr/bin/env python3
-"""
-Basic Example: Black-Scholes Option Pricing
-===========================================
 
-This example demonstrates basic usage of the Black-Scholes model
-for pricing Nifty50 options and calculating Greeks.
-"""
 
 import numpy as np
 import pandas as pd
