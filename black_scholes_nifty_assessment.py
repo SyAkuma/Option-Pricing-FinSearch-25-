@@ -1,15 +1,5 @@
 
 #!/usr/bin/env python3
-"""
-Black-Scholes Model Accuracy Assessment for Nifty50 Options
-============================================================
-
-This script assesses the accuracy of the Black-Scholes Model by comparing
-calculated option prices with real market prices for Nifty50 index options.
-
-Author: Quantitative Analysis Team
-Date: August 2025
-"""
 
 import numpy as np
 import pandas as pd
